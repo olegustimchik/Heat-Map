@@ -1,0 +1,75 @@
+import { Color } from 'src/intarfaces/color';
+
+export class ColorGradient {
+  private max: number;
+
+  private min: number;
+
+  private temperatures: Buffer;
+
+  constructor() {
+    this.max = 135;
+    this.min = -136;
+  }
+
+  findMaxAndMin = (): void => {
+    // for (let i = 0; i < this.temperatures.length; i++) {
+    //     this.min = (this.temperatures[i] < this.min) ? this.temperatures[i] : this.min;
+    //     this.max = (this.temperatures[i] > this.max) ? this.temperatures[i] : this.max;
+    // }
+  };
+
+  normalize = (dataPoint: number): number => {
+    return (dataPoint - this.min) / (this.max - this.min);
+  };
+
+  getHeapColor = (dataPoint): number[] => {
+    const NUM_COLORS = 4;
+    const color = [
+      [0, 0, 255],
+      [0, 255, 0],
+      [255, 255, 0],
+      [255, 0, 0],
+    ];
+    // A static array of 4 colors:  (blue,   green,  yellow,  red) using {r,g,b} for each.
+
+    let idx1: number; // Our desired color will be between these two indexes in "color".
+    let idx2: number;
+    let fractBetween = 0;
+
+    if (dataPoint <= 0) {
+      idx1 = 0;
+      idx2 = 0;
+    } // accounts for an input <=0
+    else if (dataPoint >= 1) {
+      idx1 = NUM_COLORS - 1;
+      idx2 = NUM_COLORS - 1;
+    } // accounts for an input >=0
+    else {
+      dataPoint = dataPoint * (NUM_COLORS - 1); // Will multiply value by 3.
+      idx1 = dataPoint; // Our desired color will be after this index.
+      idx2 = idx1 + 1; // ... and before this index (inclusive).
+      fractBetween = dataPoint - idx1; // Distance between the two indexes (0-1).
+    }
+
+    idx1 = Math.floor(idx1);
+    idx2 = Math.floor(idx2);
+    const red = (color[idx2][0] - color[idx1][0]) * fractBetween + color[idx1][0];
+    const green = (color[idx2][1] - color[idx1][1]) * fractBetween + color[idx1][1];
+    const blue = (color[idx2][2] - color[idx1][2]) * fractBetween + color[idx1][2];
+
+    return [red, green, blue];
+  };
+
+  generateColor = (point: number): Color => {
+    const color = this.getHeapColor(this.normalize(point));
+
+    return { r: color[0], g: color[1], b: color[2], a: 255 };
+  };
+
+  distance = (goalColor: Color, pixel: Color): number => {
+    return Math.sqrt(
+      Math.pow(goalColor.r - pixel.r, 2) + Math.pow(goalColor.g - pixel.g, 2) + Math.pow(goalColor.b - pixel.b, 2),
+    );
+  };
+}
