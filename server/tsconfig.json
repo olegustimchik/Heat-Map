@@ -2,6 +2,7 @@
   "compilerOptions": {
     "strict": true,
     "module": "ES2022",
+    "moduleResolution": "Node",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -22,4 +23,6 @@
       "src/*": ["./src/*"]
     }
   },
+  "exclude": ["dist", "node_modules"],
+  "include": ["./src"]
 }
