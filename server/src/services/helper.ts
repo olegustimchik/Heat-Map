@@ -12,4 +12,17 @@ export class HelperService {
       });
     });
   };
+
+  writeFile = (path: string, data: string | Buffer): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile(path, data, (err) => {
+        if (err) {
+          reject(err);
+        }
+
+        resolve();
+      });
+    });
+  };
+
 }
