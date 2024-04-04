@@ -13,9 +13,14 @@ export class ArchiveController extends Controller {
     try {
       const archive = await this.archiveService.createArchive('./public/sst.grid');
 
-      res.send(archive);
+      res.download(archive, (err) => {
+        if (err) { 
+          res.status(500).send({ message: "Can't read file"}); 
+        }
+      });
     } catch (err) {
-      res.sendStatus(400).send({ message: 'Something went wrong' });
+      res.status(400).send({ message: 'Something went wrong' });
+      console.log(err);
       // here must be logger
     }
   };

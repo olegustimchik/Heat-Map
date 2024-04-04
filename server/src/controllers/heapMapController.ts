@@ -13,10 +13,9 @@ export class HeapMapController extends Controller {
     try {
       const image = await this.heapMapService.generateHeapMap('./public/sst.grid');
 
-      res.setHeader('content-type', '');
       res.send(image.toJSON());
     } catch (err) {
-      res.sendStatus(400).send({ message: 'Something went wrong' });
+      res.status(400).send({ message: 'Something went wrong' });
       // here must be logger
     }
   };
