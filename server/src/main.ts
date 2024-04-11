@@ -1,19 +1,19 @@
 import App from './app';
 import { ArchiveController } from './controllers/archiveController';
-import { HeapMapController } from './controllers/heapMapController';
+import { HeatMapController } from './controllers/heatMapController';
 import { ColorGradient } from './heatMapColor/colorGradient';
 import { ArchiveService } from './services/archiveService';
-import { HeapMapService } from './services/heapMapService';
+import { HeatMapService } from './services/heatMapService';
 import { HelperService } from './services/helper';
 
 const helper: HelperService = new HelperService();
 const colorGradient: ColorGradient = new ColorGradient();
 const archiveService: ArchiveService = new ArchiveService(helper);
-const heapService: HeapMapService = new HeapMapService(helper, colorGradient);
+const heatService: HeatMapService = new HeatMapService(helper, colorGradient);
 
 const archiveController: ArchiveController = new ArchiveController(archiveService);
-const heapMapController: HeapMapController = new HeapMapController(heapService);
+const heatMapController: HeatMapController = new HeatMapController(heatService);
 
-const app = new App(3000, [heapMapController, archiveController]);
+const app = new App(3000, [heatMapController, archiveController]);
 
 app.start();

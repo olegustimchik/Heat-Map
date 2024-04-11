@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import { readFile } from 'node:fs/promises';
-import { Controller } from '../controllers/controller';
-import { HeapMapService } from '../services/heapMapService';
+import { Controller } from './controller';
+import { HeatMapService } from '../services/heatMapService';
 
-export class HeapMapController extends Controller {
-  constructor(private heapMapService: HeapMapService) {
+export class HeatMapController extends Controller {
+  constructor(private heatMapService: HeatMapService) {
     super('/heatMap');
     this.router.get('/', this.get);
     this.router.get('/image', this.getImage);
@@ -12,7 +12,7 @@ export class HeapMapController extends Controller {
 
   get = async (reg: Request, res: Response) => {
     try {
-      const image = await this.heapMapService.generateHeapMap('./public/sst.grid');
+      const image = await this.heatMapService.generateHeatMap('./public/sst.grid');
 
       res.send({ path: image });
     } catch (err) {

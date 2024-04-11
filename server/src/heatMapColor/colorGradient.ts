@@ -1,4 +1,4 @@
-import { Color } from 'src/intarfaces/color';
+import { Color } from "src/interfaces/color"
 
 export class ColorGradient {
   private max: number;
@@ -24,7 +24,7 @@ export class ColorGradient {
     return (dataPoint - this.min) / (this.max - this.min);
   };
 
-  getHeapColor = (dataPoint): number[] => {
+  getHeatColor = (dataPoint): number[] => {
     const NUM_COLORS = 8;
     const color = [
       [0, 0, 255],
@@ -66,7 +66,7 @@ export class ColorGradient {
   };
 
   generateColor = (point: number): Color => {
-    const color = this.getHeapColor(this.normalize(point));
+    const color = this.getHeatColor(this.normalize(point));
     return { r: color[0], g: color[1], b: color[2], a: 255 };
   };
 

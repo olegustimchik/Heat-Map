@@ -4,13 +4,13 @@ import { ColorGradient } from '../heatMapColor/colorGradient';
 
 import { HelperService } from './helper';
 
-export class HeapMapService {
+export class HeatMapService {
   constructor(
     private helper: HelperService,
     private colorGradient: ColorGradient,
   ) { }
 
-  generateHeapMap = async (pathToGrid: string): Promise<string> => {
+  generateHeatMap = async (pathToGrid: string): Promise<string> => {
     const image = await Jimp.read('./public/images/rotated.jpeg');
     const data = await this.helper.readFile(pathToGrid);
     let inverse = data.reverse()
