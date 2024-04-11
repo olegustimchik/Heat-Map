@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Buffer } from 'buffer';
 import axios from 'axios';
 import useScreenSize from '../services/screenSize';
 
@@ -8,9 +7,11 @@ async function getImage(url: string) {
     const resp = await axios.get(url);
 
     console.log(resp.data);
-    const blob = new Blob([Buffer.from(resp.data, 'base64')], { type: 'image/jpeg' });
-    console.log(URL.createObjectURL(blob));
-    return URL.createObjectURL(blob);
+    const path = resp.data.path; 
+    if (typeof path !== 'string'){ 
+      throw new Error("not valid"); 
+    }
+    return path; 
   } catch (err) {
     console.log(err);
     return null;
@@ -45,7 +46,7 @@ export function HeatMap() {
             className="heat-map"
             alt="heat map"
             width={screenSize.width * 0.7}
-            height={screenSize.height * 0.35}
+            height={screenSize.height * 0.5}
           />
         )}
       </div>

@@ -4,19 +4,20 @@ export class ColorGradient {
   private max: number;
 
   private min: number;
-
-  private temperatures: Buffer;
-
   constructor() {
-    this.max = 135;
-    this.min = -136;
+    this.max = 93;
+    this.min = 30;
   }
 
-  findMaxAndMin = (): void => {
-    // for (let i = 0; i < this.temperatures.length; i++) {
-    //     this.min = (this.temperatures[i] < this.min) ? this.temperatures[i] : this.min;
-    //     this.max = (this.temperatures[i] > this.max) ? this.temperatures[i] : this.max;
-    // }
+  findMaxAndMin = (temperatures: Buffer): void => {
+
+    for (let i = 0; i < temperatures.length; i++) {
+      if (temperatures[i].valueOf() !== 255) {
+        this.min = (temperatures[i].valueOf() < this.min) ? temperatures[i].valueOf() : this.min;
+        this.max = (temperatures[i].valueOf() > this.max) ? temperatures[i].valueOf() : this.max;
+      }
+    }
+    console.log(this.max, this.min);
   };
 
   normalize = (dataPoint: number): number => {
@@ -24,15 +25,18 @@ export class ColorGradient {
   };
 
   getHeapColor = (dataPoint): number[] => {
-    const NUM_COLORS = 4;
+    const NUM_COLORS = 8;
     const color = [
       [0, 0, 255],
-      [0, 255, 0],
-      [255, 255, 0],
-      [255, 0, 0],
+      [24, 205, 224],
+      [0, 255, 0],// green
+      [124, 252, 0],  
+      [255, 255, 0],//yellow 
+      [255, 172, 28], 
+      [233, 116, 81],// red
+      [136, 8, 8],//
     ];
-    // A static array of 4 colors:  (blue,   green,  yellow,  red) using {r,g,b} for each.
-
+   
     let idx1: number; // Our desired color will be between these two indexes in "color".
     let idx2: number;
     let fractBetween = 0;
@@ -63,7 +67,6 @@ export class ColorGradient {
 
   generateColor = (point: number): Color => {
     const color = this.getHeapColor(this.normalize(point));
-
     return { r: color[0], g: color[1], b: color[2], a: 255 };
   };
 
